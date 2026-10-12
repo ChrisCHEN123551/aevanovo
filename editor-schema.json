@@ -1,0 +1,164 @@
+[
+  {
+    "id": "home-1",
+    "group": "home",
+    "label": "以生物科技，",
+    "multiline": false
+  },
+  {
+    "id": "home-2",
+    "group": "home",
+    "label": "以生物科技， · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "home-3",
+    "group": "home",
+    "label": "微观的探索。",
+    "multiline": false
+  },
+  {
+    "id": "home-4",
+    "group": "home",
+    "label": "微观的探索。 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "home-5",
+    "group": "home",
+    "label": "从生命灵感，",
+    "multiline": false
+  },
+  {
+    "id": "home-6",
+    "group": "home",
+    "label": "从生命灵感， · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "brand-1",
+    "group": "brand",
+    "label": "艾芙诺，让科学与美相遇。",
+    "multiline": false
+  },
+  {
+    "id": "brand-2",
+    "group": "brand",
+    "label": "艾芙诺，让科学与美相遇。 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "brand-3",
+    "group": "brand",
+    "label": "艾芙诺，让科学与美相遇。 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "science-1",
+    "group": "science",
+    "label": "01 / 重组蛋白研发",
+    "multiline": false
+  },
+  {
+    "id": "science-2",
+    "group": "science",
+    "label": "01 / 重组蛋白研发 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "science-3",
+    "group": "science",
+    "label": "02 / 生物制造技术",
+    "multiline": false
+  },
+  {
+    "id": "science-4",
+    "group": "science",
+    "label": "02 / 生物制造技术 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "science-5",
+    "group": "science",
+    "label": "03 / 原料信息与质量",
+    "multiline": false
+  },
+  {
+    "id": "science-6",
+    "group": "science",
+    "label": "03 / 原料信息与质量 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "science-7",
+    "group": "science",
+    "label": "04 / 配方应用探索",
+    "multiline": false
+  },
+  {
+    "id": "science-8",
+    "group": "science",
+    "label": "04 / 配方应用探索 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "products-1",
+    "group": "products",
+    "label": "重组胶原蛋白",
+    "multiline": false
+  },
+  {
+    "id": "products-2",
+    "group": "products",
+    "label": "重组胶原蛋白 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "products-3",
+    "group": "products",
+    "label": "重组PDRN",
+    "multiline": false
+  },
+  {
+    "id": "products-4",
+    "group": "products",
+    "label": "重组PDRN · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "products-5",
+    "group": "products",
+    "label": "重组功能蛋白",
+    "multiline": false
+  },
+  {
+    "id": "products-6",
+    "group": "products",
+    "label": "重组功能蛋白 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "products-7",
+    "group": "products",
+    "label": "创新活性原料",
+    "multiline": false
+  },
+  {
+    "id": "products-8",
+    "group": "products",
+    "label": "创新活性原料 · 介绍",
+    "multiline": true
+  },
+  {
+    "id": "products-9",
+    "group": "products",
+    "label": "联合开发探索",
+    "multiline": false
+  },
+  {
+    "id": "products-10",
+    "group": "products",
+    "label": "联合开发探索 · 介绍",
+    "multiline": true
+  }
+]
