@@ -6,6 +6,7 @@
 
 - index.html：完整官网，必须上传到仓库根目录。
 - .nojekyll：关闭默认的 Jekyll 处理，建议一起上传。文件是空的，正常。
+- CNAME：指定自定义域名 aevanovo.eu.cc，请一起上传。
 - README.md：这份说明，可选。
 
 ## 发布步骤
@@ -20,10 +21,20 @@
 
 内容使用整理时的线上已发布版本快照，包括五个产品板块和已发布的联系方式。
 
-这个版本保留滚动视频、品牌介绍、技术平台、五个产品板块、中英文切换及咨询摘要。它只展示内容，没有在线管理后台或云端数据库；以后可通过 GitHub 修改 index.html 并重新发布。原有 Sites 管理后台的修改不会自动同步到这个版本。
+这个版本保留 DNA 背景动效、品牌介绍、技术平台、五个产品板块、中英文切换及咨询摘要。2026-10-13 更新了阅读排版、单板块展开、手机菜单、章节导航与公开商务联系方式。咨询摘要可打开邮件草稿，由访客在邮件应用中确认发送；页面不会自动收取或发送咨询。它只展示内容，没有在线管理后台或云端数据库；以后可通过 GitHub 修改 index.html 并重新发布。原有 Sites 管理后台的修改不会自动同步到这个版本。
 
-页面样式与脚本已包含在 index.html 中；字体和背景视频仍从原参考设计提供的外部地址加载。视频加载失败时会显示备用视觉，也可点击“跳过加载”进入页面。
+2026-10-13 加载修复：页面样式、脚本、原生 DNA 模型、备用图形及箭头图标均包含在 index.html 中。页面不再请求外部字体或视频，也不再等待加载遮罩；无需下载或播放视频即可显示背景模型。设备无法绘制动态模型时保留内置 DNA 图形。手机端降低绘制精度与帧率，页面隐藏或打开详情时暂停背景绘制。
 
 不要上传旧项目的 node_modules、.git、.dev.vars、.env、.wrangler、.sites-runtime、在线后台或数据库文件。当前展示版本没有密钥、账户凭据或用户咨询数据。
 
 GitHub Pages 文档：https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
+
+## 自定义域名 aevanovo.eu.cc
+
+上传包包含 CNAME 文件，内容为 aevanovo.eu.cc。
+
+先在仓库 Settings → Pages 中设置 Custom domain 为 aevanovo.eu.cc 并保存，再通过域名管理平台设置指向 GitHub Pages 的 DNS 记录。目标地址需根据实际 GitHub 用户名或组织名称确定，不包含仓库路径。具体主机记录名称取决于域名管理平台提供的 DNS 区域，不能直接照抄其他域名的设置。
+
+DNS 配置与域名验证完成后，检查 Pages 的 HTTPS 状态并开启 Enforce HTTPS。
+
+自定义域名文档：https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
