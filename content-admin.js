@@ -4,7 +4,7 @@
   const sections=[
     {id:'home',name:'首页文案',description:'保留 DNA 动效，让品牌表达更准确。',view:'home',fields:[['home-1','品牌章节 · 标题'],['home-2','品牌章节 · 介绍'],['home-3','技术章节 · 标题'],['home-4','技术章节 · 介绍'],['home-5','原料章节 · 标题'],['home-6','原料章节 · 介绍']]},
     {id:'brand',name:'品牌介绍',description:'讲述艾芙诺的品牌理念与科学背景。',view:'brand',fields:[['brand-1','品牌标题'],['brand-2','品牌介绍'],['brand-3','品牌理念']]},
-    {id:'science',name:'技术优势',description:'让研发实力与技术方向表达得更清晰。',view:'science',fields:[['science-1','研发优势 · 标题'],['science-2','研发优势 · 介绍'],['science-3','生物制造 · 标题'],['science-4','生物制造 · 介绍'],['science-5','原料与质量 · 标题'],['science-6','原料与质量 · 介绍'],['science-7','应用探索 · 标题'],['science-8','应用探索 · 介绍']]},
+    {id:'science',name:'技术平台',description:'编辑四大核心技术平台的名称与完整介绍。',view:'science',fields:[['science-1','精准分子设计平台 · 标题'],['science-2','精准分子设计平台 · 介绍'],['science-3','高通量筛选验证平台 · 标题'],['science-4','高通量筛选验证平台 · 介绍'],['science-5','重组表达与生物制造平台 · 标题'],['science-6','重组表达与生物制造平台 · 介绍'],['science-7','质量分析与结构表征平台 · 标题'],['science-8','质量分析与结构表征平台 · 介绍']]},
     {id:'products',name:'五大产品板块',description:'分别编辑五个板块的名称、介绍和可选图片。',view:'products',fields:C.KEYS.filter(key=>key.startsWith('products-')).map((key,i)=>[key,i%2?'板块介绍':'板块名称'])},
     {id:'contact',name:'联系我们',description:'这里填写的联系方式会公开展示在官网。',view:'contact',fields:[]}
   ];
