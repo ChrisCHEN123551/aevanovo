@@ -1,4 +1,4 @@
-# AEVANOVO 艾芙诺官网展示版
+# AEVANOVO 艾芙诺官网与内容编辑器
 
 这个文件夹可直接上传 GitHub Pages。无需安装依赖，无需构建。
 
@@ -10,6 +10,9 @@
 - dna-mobile.mp4：省流量或很慢网络下的轻量版，必须一起上传。
 - .nojekyll：关闭默认的 Jekyll 处理，建议一起上传。文件是空的，正常。
 - CNAME：指定自定义域名 aevanovo.eu.cc，请一起上传。
+- admin.html：中文内容编辑器入口。
+- content-admin.css、content-admin.js、content-core.js：编辑器样式与发布功能，必须一起上传。
+- 内容编辑使用说明.md：首次授权与日常编辑说明，可选。
 - README.md：这份说明，可选。
 
 ## 发布步骤
@@ -24,7 +27,7 @@
 
 内容使用整理时的线上已发布版本快照，包括五个产品板块和已发布的联系方式。
 
-这个版本保留 DNA 背景动效、品牌介绍、技术平台、五个产品板块、中英文切换及咨询摘要。2026-10-13 更新了阅读排版、单板块展开、手机菜单、章节导航与公开商务联系方式。咨询摘要可打开邮件草稿，由访客在邮件应用中确认发送；页面不会自动收取或发送咨询。它只展示内容，没有在线管理后台或云端数据库；以后可通过 GitHub 修改 index.html 并重新发布。原有 Sites 管理后台的修改不会自动同步到这个版本。
+这个版本保留 DNA 背景动效、品牌介绍、技术平台、五个产品板块、中英文切换及咨询摘要。2026-10-13 更新了阅读排版、单板块展开、手机菜单、章节导航与公开商务联系方式。咨询摘要可打开邮件草稿，由访客在邮件应用中确认发送；页面不会自动收取或发送咨询。2026-10-19 新增静态内容编辑器，入口为 /admin.html。编辑器通过 GitHub 授权直接提交仓库，使用 GitHub 的版本历史与 GitHub Pages 发布；不依赖旧 Sites 后台或单独数据库。原有 Sites 管理后台的修改不会同步到这个版本。
 
 2026-10-13 清晰度优化：沿用原版 DNA 素材、轮廓、比例、左倾、放大及章节镜头。桌面保留 1080 像素的原始画面高度，手机提高至 960 像素，并做轻度锐化。画面仅去除原方形显示窗口以外未展示的左右边缘；屏幕中的形状和取景保持一致。
 
@@ -32,7 +35,7 @@
 
 页面样式、脚本和封面包含在 index.html 中；三份 MP4 必须与 index.html 一起上传。无需构建。
 
-不要上传旧项目的 node_modules、.git、.dev.vars、.env、.wrangler、.sites-runtime、在线后台或数据库文件。当前展示版本没有密钥、账户凭据或用户咨询数据。
+不要上传旧项目的 node_modules、.git、.dev.vars、.env、.wrangler、.sites-runtime 或数据库文件。编辑器代码本身不包含密钥、账户凭据或用户咨询数据；请勿把 GitHub 授权码写入任何仓库文件。
 
 GitHub Pages 文档：https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
 
@@ -45,3 +48,24 @@ GitHub Pages 文档：https://docs.github.com/en/pages/getting-started-with-gith
 DNS 配置与域名验证完成后，检查 Pages 的 HTTPS 状态并开启 Enforce HTTPS。
 
 自定义域名文档：https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
+
+
+## 在线内容编辑（2026-10-19）
+
+地址：https://aevanovo.eu.cc/admin.html
+
+支持 27 项中英文内容、商务邮箱/电话/地址、1 张品牌图片与 5 张产品板块图片、实时预览、草稿恢复及 JSON 内容备份。原始品牌内容及 DNA 视频、镜头、比例、倾斜、时间线保持不变。未传图片时，官网保持原有布局。
+
+“草稿”仅保存在当前浏览器 localStorage，不会自动同步到其他设备。“确认发布”使用 GitHub REST API，将 index.html 与新增图片通过一个 Git 提交写入 main，再由 GitHub Pages 更新官网。版本冲突会阻止发布，不会强制覆盖。显示“已提交”只代表 GitHub 保存完成，只有读回官网内容一致后才显示“已上线”。
+
+发布需要细粒度 GitHub Personal Access Token，仅选择 aevanovo 仓库，Contents: Read and write，建议 30 天有效期。授权码只在当前页面内存中使用，不写入 localStorage/sessionStorage、URL、文件或仓库；刷新/退出后需重新输入。浏览器仅将授权码发送至 https://api.github.com。创建授权码需本人在 GitHub 完成。
+
+图片在浏览器中压缩为 WebP，并存放于仓库 media/ 目录；单张原图上限 5 MB，最长边压缩到 1400 像素，压缩后不超过约 310 KB。移除图片不会删除 Git 历史中的旧文件，便于恢复。
+
+本后台管理公开网站内容；访客咨询表单仍使用原有邮件草稿方式，不会收集到后台。
+
+技术依据：
+- https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
+- https://docs.github.com/en/rest/git/trees
+- https://docs.github.com/en/rest/git/commits
+- https://docs.github.com/en/rest/git/refs
