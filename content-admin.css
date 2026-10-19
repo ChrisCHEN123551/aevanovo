@@ -3,3 +3,17 @@
 .product-group summary{cursor:pointer;list-style:none}.product-group summary::-webkit-details-marker{display:none}.product-group summary h2{margin-bottom:0;align-items:center}.product-group summary h2::after{content:"+";margin-left:auto;color:var(--muted);font-weight:400}.product-group[open] summary h2{margin-bottom:20px}.product-group[open] summary h2::after{content:"−"}.preview-host{position:relative}.preview-host iframe{position:absolute;left:50%;top:50%;width:390px;height:760px;transform:translate(-50%,-50%) scale(var(--preview-scale,.5))}
 
 main{scroll-margin-top:100px}@media(max-width:600px){main{scroll-margin-top:145px}}
+
+/* Original five-panel portfolio artwork, viewed without altering the source image. */
+
+.cms-picture{position:relative;display:block;overflow:hidden;background:#f1ede7;border-radius:10px;margin:0}
+.cms-picture>img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:0;margin:0}
+.cms-picture.is-composite{aspect-ratio:calc(var(--crop-w)/var(--crop-h))}
+.cms-picture.is-composite>img{position:absolute;width:calc(1536 / var(--crop-w) * 100%);height:auto;max-width:none;max-height:none;aspect-ratio:1536/1024;left:calc(-1 * var(--crop-x) / var(--crop-w) * 100%);top:calc(-1 * var(--crop-y) / var(--crop-h) * 100%);object-fit:fill}
+[data-composite="collagen"]{--crop-x:0;--crop-y:0;--crop-w:765;--crop-h:505}
+[data-composite="pdrn"]{--crop-x:772;--crop-y:0;--crop-w:764;--crop-h:505}
+[data-composite="functional"]{--crop-x:0;--crop-y:513;--crop-w:508;--crop-h:511}
+[data-composite="actives"]{--crop-x:516;--crop-y:513;--crop-w:506;--crop-h:511}
+[data-composite="development"]{--crop-x:1029;--crop-y:513;--crop-w:507;--crop-h:511}
+
+.image-editor .admin-image-frame{margin:0 0 14px}.image-editor .admin-image-frame>img{margin:0;max-height:180px;object-fit:contain}.image-editor .admin-image-frame.is-composite{max-width:220px}.image-editor .admin-image-frame.is-composite>img{max-height:none;object-fit:fill}

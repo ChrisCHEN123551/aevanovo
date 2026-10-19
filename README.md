@@ -5,6 +5,7 @@
 ## 需要上传的文件
 
 - index.html：官网页面，必须上传到仓库根目录。
+- media/：产品配图目录，需保留目录名称与内部文件一起上传。
 - dna-desktop-hd.mp4：桌面高清 DNA 动效，必须上传到同一个根目录。
 - dna-mobile-hd.mp4：手机高清 DNA 动效，必须上传到同一个根目录。
 - dna-mobile.mp4：省流量或很慢网络下的轻量版，必须一起上传。
@@ -69,3 +70,10 @@ DNS 配置与域名验证完成后，检查 Pages 的 HTTPS 状态并开启 Enfo
 - https://docs.github.com/en/rest/git/trees
 - https://docs.github.com/en/rest/git/commits
 - https://docs.github.com/en/rest/git/refs
+
+
+## 五大产品板块图文展示（2026-10-19）
+
+五大板块已采用编号、缩略图、中英文标题、展开大图和完整介绍的图文布局。手机默认展示五个入口，桌面默认展开重组胶原蛋白。每个板块可直接进入对应咨询方向。直接入口：https://aevanovo.eu.cc/#catalog
+
+原始配图保存在 media/aevanovo-portfolios-20261019.png，保持用户提供的原始像素，通过 CSS 视窗分别展示五幅画面，同一张图片由浏览器缓存复用。请不要遗漏这个目录；替换图片、修改中英文介绍仍可通过后台完成。后台更换为其他图片后会自动使用普通图片布局。
