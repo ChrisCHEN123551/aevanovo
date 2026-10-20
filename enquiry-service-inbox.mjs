@@ -1,19 +1,25 @@
 import {json,NO_STORE,bodyJSON,InputError,STATUSES,UUID,cursorDecode,cursorEncode} from './enquiry-service-common.mjs';
 import {INBOX_HTML,INBOX_JS,INBOX_CSS} from './enquiry-service-inbox-assets.mjs';
-export default {async fetch(request,env,ctx){
-  // ctx.access is supplied by Cloudflare's verified Worker-level Access protection.
-  // Never trust identity headers supplied by the visitor; without Access, deny all requests.
-  if(!ctx?.access?.getIdentity)return json({error:'请使用授权账号登录咨询后台。'},403);
-  let identity;try{identity=await ctx.access.getIdentity()}catch{return json({error:'登录已失效，请重新登录。'},401)}
-  const email=String(identity?.email||'').toLowerCase(),allow=String(env.ADMIN_EMAILS||'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
-  if(!email||!allow.includes(email))return json({error:'此账号没有咨询查看权限。'},403);
+import {authRoute,authorizedIdentity,loginPage,PRIVATE_HEADERS} from './enquiry-service-auth.mjs';
+export default {async fetch(request,env){
+ try{
+  const path=new URL(request.url).pathname;
+  const auth=await authRoute(request,env);if(auth)return auth;
+  if(path==='/inbox.css'&&request.method==='GET')return new Response(INBOX_CSS,{headers:{...PRIVATE_HEADERS,'Content-Type':'text/css; charset=utf-8'}});
+  const identity=await authorizedIdentity(request,env);
+  if(!identity){if(request.method==='GET'&&['/','/inbox'].includes(path))return loginPage();return json({error:'请使用授权 GitHub 账号登录咨询后台。'},401)}
+  return serveInbox(request,env,identity);
+ }catch{return json({error:'咨询服务暂不可用，请稍后重试。'},503)}
+}};
+// Also used by a localhost-only preview fixture; the public Worker always authenticates above.
+export async function serveInbox(request,env,identity){
   if(!env.DB)return json({error:'咨询存储尚未连接。'},503);
   const u=new URL(request.url),path=u.pathname;
   if(request.method==='GET'&&['/','/inbox','/inbox.js','/inbox.css'].includes(path)){
     const type=path.endsWith('.js')?'text/javascript':path.endsWith('.css')?'text/css':'text/html',content=path.endsWith('.js')?INBOX_JS:path.endsWith('.css')?INBOX_CSS:INBOX_HTML;
     return new Response(content,{headers:{...NO_STORE,'Content-Type':type+'; charset=utf-8','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",'X-Frame-Options':'DENY'}});
   }
-  if(path==='/api/session'&&request.method==='GET')return json({email,preview:env.LOCAL_PREVIEW==='true'});
+  if(path==='/api/session'&&request.method==='GET')return json({login:identity.login,preview:env.LOCAL_PREVIEW==='true'});
   try{
     if(path==='/api/enquiries'&&request.method==='GET'){
       const status=u.searchParams.get('status')||'',q=(u.searchParams.get('q')||'').trim();
@@ -38,4 +44,4 @@ export default {async fetch(request,env,ctx){
     }
     return json({error:'Not found'},404);
   }catch(error){return json({error:error instanceof InputError?error.message:'暂时无法读取咨询，请稍后刷新。'},error instanceof InputError?error.status:503)}
-}};
+}

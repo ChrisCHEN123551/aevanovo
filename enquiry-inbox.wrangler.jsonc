@@ -6,7 +6,7 @@
   "workers_dev": true,
   "preview_urls": false,
   "observability": {
-    "enabled": true
+    "enabled": false
   },
   "d1_databases": [
     {
@@ -15,5 +15,19 @@
       "database_id": "95ecae81-d47e-4523-bab2-63aaa0451cb5"
     }
   ],
-  "keep_vars": true
+  "keep_vars": true,
+  "vars": {
+    "GITHUB_CLIENT_ID": "Ov23liHGtB3mRRYOueou",
+    "GITHUB_OWNER_ID": "219934539"
+  },
+  "ratelimits": [
+    {
+      "name": "LOGIN_RATE_LIMITER",
+      "namespace_id": "1002",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ]
 }

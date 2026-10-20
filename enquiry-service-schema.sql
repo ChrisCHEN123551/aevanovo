@@ -16,3 +16,13 @@ CREATE TABLE IF NOT EXISTS enquiries (
 );
 CREATE INDEX IF NOT EXISTS enquiries_order ON enquiries(created_at DESC, id DESC);
 CREATE INDEX IF NOT EXISTS enquiries_status_order ON enquiries(status, created_at DESC, id DESC);
+
+CREATE TABLE IF NOT EXISTS enquiry_device_logins (
+ token_hash TEXT PRIMARY KEY, device_code TEXT NOT NULL, expires_at INTEGER NOT NULL,
+ interval_seconds INTEGER NOT NULL, next_poll_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS enquiry_device_expiry ON enquiry_device_logins(expires_at);
+CREATE TABLE IF NOT EXISTS enquiry_sessions (
+ token_hash TEXT PRIMARY KEY, github_id TEXT NOT NULL, github_login TEXT NOT NULL, expires_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS enquiry_session_expiry ON enquiry_sessions(expires_at);

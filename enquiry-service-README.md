@@ -14,9 +14,11 @@ This service adds direct enquiry submission and an authenticated inbox to the ex
 
 Both Workers use the same `DB` binding. The intake Worker uses `ENQUIRY_RATE_LIMITER` (8 requests per 60 seconds per hashed network key). Its allowed public origin is `https://aevanovo.eu.cc`.
 
-The inbox requires verified **Worker-level Cloudflare Access** for all traffic. It also checks the signed-in email against the `ADMIN_EMAILS` runtime secret, configured only in Cloudflare. Without verified Access identity and an explicitly allowed email, every inbox request is denied. A caller-supplied identity header is never trusted.
+The inbox uses GitHub OAuth Device Flow with **empty scope** for basic public-account identity only. It accepts only the configured stable numeric GitHub account ID. It does not request repository or private-email permissions. The GitHub token is used on the server to verify identity, and is never stored, sent to the browser or logged. Login applications do not require a client secret for this flow.
 
-No GitHub token, Cloudflare API token, database password or administrator email belongs in public frontend configuration. `keep_vars` preserves runtime configuration managed in the dashboard. Preview URLs are disabled. Keep the database's existing contents during later website or service updates.
+Login attempts use short-lived private D1 records and an opaque Secure/HttpOnly/SameSite=Strict cookie. Inbox sessions last at most eight hours; the database stores only a SHA-256 session hash. Logout invalidates the session. The inbox requires a valid unexpired session for every customer-data request, ignores client-supplied identity headers and checks same-origin/custom headers on all state changes. Unauthenticated visitors can only see the login screen.
+
+No GitHub token, Cloudflare API token, database password or private administrator information belongs in public frontend configuration. `keep_vars` preserves runtime configuration managed in the dashboard. Preview URLs are disabled. Keep the database's existing contents during later website or service updates.
 
 ## Deployment
 
@@ -31,6 +33,6 @@ Only switch the website's form and enquiry-inbox entry after storage, unauthoriz
 
 ## Verification before enabling
 
-The service was tested with real local SQLite storage for successful creation, duplicate retries, invalid input, rate limiting, failed writes, denied identities, spoofed headers, pagination, literal search, status changes and cross-origin write rejection. Local browser testing confirmed that a form submission appears in the inbox and that a changed follow-up status survives reload.
+The service was tested with real local SQLite storage for successful creation, duplicate retries, invalid input, rate limiting, failed writes, denied accounts, session expiry, logout, spoofed headers, pagination, literal search, status changes and cross-origin write rejection. Local browser testing confirmed that a form submission appears in the inbox and that a changed follow-up status survives reload.
 
 Local test servers and test databases are not production authentication mechanisms and are not published with these service files.
