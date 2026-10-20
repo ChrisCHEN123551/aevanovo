@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "aevanovo-enquiry-inbox",
+  "main": "enquiry-service-inbox.mjs",
+  "compatibility_date": "2026-10-20",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "aevanovo-enquiries",
+      "database_id": "95ecae81-d47e-4523-bab2-63aaa0451cb5"
+    }
+  ],
+  "keep_vars": true
+}
