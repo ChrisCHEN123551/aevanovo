@@ -1,0 +1,1 @@
+const c=window.AEVANOVOEnquiries||{},s=document.getElementById('inquiriesState'),a=document.getElementById('inquiriesOpen');try{const u=new URL(c.inboxURL);if(u.protocol!=='https:'&&!(c.localPreview&&u.hostname==='127.0.0.1'))throw new Error();s.textContent='请使用授权账号登录。客户提交的需求会保存在咨询收件箱中。';a.href=u.href;a.hidden=false}catch{s.textContent='咨询后台尚未开通。正式连接后，可在这里登录并查看客户需求。'}
