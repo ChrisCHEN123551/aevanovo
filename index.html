@@ -343,7 +343,7 @@ var meter=document.getElementById('meter'),panels=[].slice.call(document.querySe
 // Tighter text handoffs keep each chapter distinct without long empty pauses.
 var CUES=[[0,0,.15,.29],[.29,.43,.58,.72],[.72,.86,1.10,1.20]],DRIFT=56;
 var progress=0,targetProgress=0,scrollInitialized=false,navMotion=null,lastFrame=0,animationFrame=0,lang='zh',lastPanel=-1,dialogTrigger=null,bodyScroll=0;
-var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches||new URLSearchParams(location.search).get('motion')==='off';
 // One chapter timeline drives the DNA camera, light and text; no pointer tracking.
 var modelStage=document.querySelector('.stage'),modelAngle=-22,modelZoom=1.16,modelFit=1,modelWidth=0,modelHeight=0,modelLastProgress=-1;
 var CHAPTER_STOPS=[0,.5,.93],CAMERA_POSES=[[0,0,0,0,0,0],[.09,-.035,-28,.16,5,-8],[-.045,.045,8,.06,-3,7]];
@@ -359,7 +359,7 @@ function paint(){if(Math.abs(progress-lastPaintProgress)<.000001)return;lastPain
 var dnaCanvas=null,dnaContext=null,dnaGL=null,dnaProgram=null,dnaTexture=null,dnaUniforms=null,dnaWorker=null;
 var dnaCache=new Map(),dnaEncoded=[],dnaGoal=progress*240,dnaPosition=dnaGoal,dnaDirection=1,dnaShown=false,dnaLastIndex=-1,dnaLastProgress=-1;
 var dnaFramesLoaded=0,dnaDraws=0,dnaUploads=0,dnaWorkerMode=false,dnaLastWant=-999,dnaStatsAt=0,dnaMisses=0,dnaPose=null,dnaDrawMS=0,dnaLost=false;
-var dnaNarrow=window.innerWidth<=900||(navigator.connection&&navigator.connection.saveData),dnaSize=dnaNarrow?900:1080,dnaLimit=dnaNarrow?18:26;
+var dnaNarrow=window.innerWidth<=900||(navigator.connection&&navigator.connection.saveData),dnaSize=dnaNarrow?900:1080,dnaLimit=dnaNarrow?10:16;
 var dnaBundleURL='media/dna-premium-'+(dnaNarrow?'900':'1080')+'-20261020.bin';
 function wakeMotion(){if(!animationFrame&&!document.hidden)animationFrame=requestAnimationFrame(frame)}
 function dnaState(state){modelStage.setAttribute('data-motion-state',state)}
@@ -393,7 +393,7 @@ function loadDNAFrames(){
  if(reduced){dnaState('reduced');return}
  dnaCanvas=document.createElement('canvas');dnaCanvas.className='dna-output';dnaCanvas.setAttribute('aria-hidden','true');
  if(!dnaSetupGL()){dnaCanvas=document.createElement('canvas');dnaCanvas.className='dna-output';dnaCanvas.setAttribute('aria-hidden','true');dnaContext=dnaCanvas.getContext('2d',{alpha:false,desynchronized:true});if(!dnaContext){dnaState('unavailable');return}}
- modelStage.insertBefore(dnaCanvas,modelStage.querySelector('.veil'));dnaResize();dnaState('buffering');modelStage.setAttribute('data-renderer',dnaGL?'original-webgl':'original-canvas-compat');
+ modelStage.insertBefore(dnaCanvas,modelStage.querySelector('.veil'));dnaResize();modelStage.setAttribute('data-motion-cache-limit',dnaLimit);dnaState('buffering');modelStage.setAttribute('data-renderer',dnaGL?'original-webgl':'original-canvas-compat');
  dnaCanvas.addEventListener('webglcontextlost',function(event){event.preventDefault();dnaLost=true;dnaShown=false;dnaState('recovering');document.body.classList.remove('sequence-ready');if(dnaWorker)dnaWorker.postMessage({type:'pause',value:true})});dnaCanvas.addEventListener('webglcontextrestored',function(){dnaLost=false;dnaSetupGL();dnaLastIndex=-1;dnaLastProgress=-1;dnaResize();if(dnaWorker)dnaWorker.postMessage({type:'pause',value:false});wakeMotion()});
  try{dnaWorker=new Worker('media/dna-decoder-20261020.js');dnaWorkerMode=true;dnaWorker.onmessage=function(event){var m=event.data;if(m.type==='frame')dnaReceive(m.index,m.bitmap);if(m.type==='buffer'||m.type==='complete'){dnaFramesLoaded=m.loaded;modelStage.setAttribute('data-motion-buffered',dnaFramesLoaded);if(m.type==='complete')modelStage.setAttribute('data-motion-download','complete')}if(m.type==='unsupported')dnaFallback();if(m.type==='unavailable')modelStage.setAttribute('data-motion-download','unavailable')};dnaWorker.onerror=function(){dnaFallback()};dnaWorker.postMessage({type:'start',url:new URL(dnaBundleURL,location.href).href,size:dnaSize,limit:dnaLimit,goal:dnaGoal,direction:dnaDirection})}catch{dnaFallback()}
  window.addEventListener('resize',dnaResize,{passive:true});
@@ -411,6 +411,22 @@ function paintDNAFrames(now){
  if(now-dnaStatsAt>200||(!navMotion&&Math.abs(targetProgress-progress)<.0001)){dnaStatsAt=now;modelStage.setAttribute('data-motion-index',index);modelStage.setAttribute('data-motion-target',dnaGoal.toFixed(2));modelStage.setAttribute('data-motion-buffered',dnaFramesLoaded);modelStage.setAttribute('data-motion-cache',dnaCache.size);modelStage.setAttribute('data-motion-paints',dnaDraws);modelStage.setAttribute('data-motion-uploads',dnaUploads);modelStage.setAttribute('data-motion-worker',dnaWorkerMode?'yes':'no');modelStage.setAttribute('data-motion-draw-max-ms',dnaDrawMS.toFixed(2));modelStage.setAttribute('data-motion-fallback-frames',dnaMisses);modelStage.setAttribute('data-motion-resolution',dnaCanvas.width+'x'+dnaCanvas.height)}
 }
 
+
+var dnaStarted=false;
+function startDNAAfterContent(){
+ if(reduced){dnaState('reduced');return}
+ dnaState('scheduled');
+ function initialize(){
+  if(dnaStarted||document.hidden)return;dnaStarted=true;
+  try{loadDNAFrames()}catch(error){
+   if(dnaWorker){dnaWorker.terminate();dnaWorker=null}
+   if(dnaCanvas)dnaCanvas.remove();dnaCanvas=null;dnaShown=false;
+   document.body.classList.remove('sequence-ready');dnaState('unavailable');
+  }
+ }
+ requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(initialize,200)})});
+ document.addEventListener('visibilitychange',function(){if(!document.hidden&&!dnaStarted)setTimeout(initialize,100)});
+}
 
 function frame(now){
 animationFrame=0;
@@ -484,6 +500,6 @@ if(window.parent!==window&&new URLSearchParams(location.search).get('_aevanovo_p
 }
 
 document.addEventListener('close',function(){if(dnaWorker)dnaWorker.postMessage({type:'pause',value:false});dnaPlan(true);wakeMotion()},true);
-window.addEventListener('scroll',readScroll,{passive:true});window.addEventListener('resize',readScroll);readScroll();paint();paintModel();loadDNAFrames();if(navMotion||Math.abs(targetProgress-progress)>.00001)animationFrame=requestAnimationFrame(frame);
+window.addEventListener('scroll',readScroll,{passive:true});window.addEventListener('resize',readScroll);readScroll();paint();paintModel();startDNAAfterContent();if(navMotion||Math.abs(targetProgress-progress)>.00001)animationFrame=requestAnimationFrame(frame);
 })();
 </script></body></html>
